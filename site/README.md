@@ -14,4 +14,8 @@ Ouvrir `index.html` dans un navigateur.
 
 ## À compléter
 Les éléments entre crochets dans `index.html` : zone de livraison, heure limite de commande, durée de conservation, délai de prévenance, frais de livraison, téléphone, email et adresse.
-Le formulaire de commande est une maquette : il n'envoie pas encore les données (à brancher sur un service comme Formspree, Netlify Forms ou un webhook).
+## Réception des commandes par email
+Le formulaire envoie chaque commande par email via le service gratuit FormSubmit (formsubmit.co).
+1. Dans `index.html`, l'adresse qui reçoit les commandes est définie par la variable `EMAIL_COMMANDES` en haut du script (actuellement contact@ferme-arbusson.fr).
+2. Passer une première commande test depuis le site en ligne : FormSubmit envoie un email d'activation, cliquer sur le lien pour l'activer.
+3. Les commandes suivantes arrivent directement dans la boîte mail, sous forme de tableau (restaurant, contact, formule, quantité, jours, montants).

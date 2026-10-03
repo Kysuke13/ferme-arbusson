@@ -393,8 +393,8 @@ button:focus-visible,a:focus-visible{outline:2px solid #D4AE62;outline-offset:3p
 <a href="#tarifs" style="color: #7A5A1E; font-size: 14px">Modifier ma sélection</a>
 </div>
 <div style="display: flex; flex-direction: column; gap: 4px; font-size: 15px; color: #3D3A34">
-<span>Téléphone : [07 66 01 26 47]</span>
-<span>Email : [devaux.michael@hotmail.fr]</span>
+<span>Téléphone : <a href="tel:+33766012647" style="color: #141412">07 66 01 26 47</a></span>
+<span>Email : <a href="mailto:contact@ferme-arbusson.fr" style="color: #141412">contact@ferme-arbusson.fr</a></span>
 </div>
 </div>
 
@@ -403,32 +403,34 @@ button:focus-visible,a:focus-visible{outline:2px solid #D4AE62;outline-offset:3p
 <div style="display: flex; flex-direction: column; gap: 18px">
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 16px">
 <div style="display: flex; flex-direction: column; gap: 6px">
-<label for="f-resto" style="font-size: 14px; font-weight: 500">Nom du restaurant</label>
-<input id="f-resto" type="text" placeholder="Le Comptoir du Marché" style="height: 48px; border: 1px solid #BDB6A8; border-radius: 4px; padding: 0 14px; font: inherit; font-size: 16px; color: #141412; background: #FFFFFF">
+<label for="f-resto" style="font-size: 14px; font-weight: 500">Nom du restaurant <span aria-hidden="true" style="color: #9B2C2C">*</span></label>
+<input id="f-resto" name="restaurant" required autocomplete="on" type="text" placeholder="Le Comptoir du Marché" style="height: 48px; border: 1px solid #BDB6A8; border-radius: 4px; padding: 0 14px; font: inherit; font-size: 16px; color: #141412; background: #FFFFFF">
 </div>
 <div style="display: flex; flex-direction: column; gap: 6px">
-<label for="f-nom" style="font-size: 14px; font-weight: 500">Votre nom</label>
-<input id="f-nom" type="text" placeholder="Prénom Nom" style="height: 48px; border: 1px solid #BDB6A8; border-radius: 4px; padding: 0 14px; font: inherit; font-size: 16px; color: #141412; background: #FFFFFF">
+<label for="f-nom" style="font-size: 14px; font-weight: 500">Votre nom <span aria-hidden="true" style="color: #9B2C2C">*</span></label>
+<input id="f-nom" name="nom" required autocomplete="on" type="text" placeholder="Prénom Nom" style="height: 48px; border: 1px solid #BDB6A8; border-radius: 4px; padding: 0 14px; font: inherit; font-size: 16px; color: #141412; background: #FFFFFF">
 </div>
 <div style="display: flex; flex-direction: column; gap: 6px">
-<label for="f-email" style="font-size: 14px; font-weight: 500">Email</label>
-<input id="f-email" type="email" placeholder="chef@restaurant.fr" style="height: 48px; border: 1px solid #BDB6A8; border-radius: 4px; padding: 0 14px; font: inherit; font-size: 16px; color: #141412; background: #FFFFFF">
+<label for="f-email" style="font-size: 14px; font-weight: 500">Email <span aria-hidden="true" style="color: #9B2C2C">*</span></label>
+<input id="f-email" name="email" required autocomplete="on" type="email" placeholder="chef@restaurant.fr" style="height: 48px; border: 1px solid #BDB6A8; border-radius: 4px; padding: 0 14px; font: inherit; font-size: 16px; color: #141412; background: #FFFFFF">
 </div>
 <div style="display: flex; flex-direction: column; gap: 6px">
-<label for="f-tel" style="font-size: 14px; font-weight: 500">Téléphone</label>
-<input id="f-tel" type="tel" placeholder="06 00 00 00 00" style="height: 48px; border: 1px solid #BDB6A8; border-radius: 4px; padding: 0 14px; font: inherit; font-size: 16px; color: #141412; background: #FFFFFF">
+<label for="f-tel" style="font-size: 14px; font-weight: 500">Téléphone <span aria-hidden="true" style="color: #9B2C2C">*</span></label>
+<input id="f-tel" name="telephone" required autocomplete="on" type="tel" placeholder="06 00 00 00 00" style="height: 48px; border: 1px solid #BDB6A8; border-radius: 4px; padding: 0 14px; font: inherit; font-size: 16px; color: #141412; background: #FFFFFF">
 </div>
 </div>
 <div style="display: flex; flex-direction: column; gap: 6px">
-<label for="f-adresse" style="font-size: 14px; font-weight: 500">Adresse de livraison</label>
-<input id="f-adresse" type="text" placeholder="Rue, code postal, ville" style="height: 48px; border: 1px solid #BDB6A8; border-radius: 4px; padding: 0 14px; font: inherit; font-size: 16px; color: #141412; background: #FFFFFF">
+<label for="f-adresse" style="font-size: 14px; font-weight: 500">Adresse de livraison <span aria-hidden="true" style="color: #9B2C2C">*</span></label>
+<input id="f-adresse" name="adresse" required autocomplete="on" type="text" placeholder="Rue, code postal, ville" style="height: 48px; border: 1px solid #BDB6A8; border-radius: 4px; padding: 0 14px; font: inherit; font-size: 16px; color: #141412; background: #FFFFFF">
 </div>
 <div style="display: flex; flex-direction: column; gap: 6px">
 <label for="f-msg" style="font-size: 14px; font-weight: 500">Message (facultatif)</label>
-<textarea id="f-msg" rows="4" placeholder="Horaires de livraison, questions…" style="border: 1px solid #BDB6A8; border-radius: 4px; padding: 12px 14px; font: inherit; font-size: 16px; color: #141412; background: #FFFFFF; resize: vertical"></textarea>
+<textarea id="f-msg" name="message" rows="4" placeholder="Horaires de livraison, questions…" style="border: 1px solid #BDB6A8; border-radius: 4px; padding: 12px 14px; font: inherit; font-size: 16px; color: #141412; background: #FFFFFF; resize: vertical"></textarea>
 </div>
-<button type="button" data-action="submit" style="background: #141412; color: #F3EEE4; border: 0; border-radius: 999px; padding: 16px 30px; min-height: 54px; font: inherit; font-size: 16px; font-weight: 500; letter-spacing: 0.04em; cursor: pointer">Envoyer ma demande</button>
-<span style="font-size: 13px; color: #5C574E">Aucun paiement en ligne : nous vous recontactons pour confirmer.</span>
+<input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position: absolute; left: -9999px; width: 1px; height: 1px">
+<p data-bind="formError" role="alert" style="margin: 0; color: #9B2C2C; font-size: 15px; font-weight: 400"></p>
+<button type="button" data-action="submit" data-disabled="sending" style="background: #141412; color: #F3EEE4; border: 0; border-radius: 999px; padding: 16px 30px; min-height: 54px; font: inherit; font-size: 16px; font-weight: 500; letter-spacing: 0.04em; cursor: pointer"><span data-bind="submitLabel"></span></button>
+<span style="font-size: 13px; color: #5C574E">Aucun paiement en ligne : nous vous recontactons pour confirmer. * Champs obligatoires.</span>
 </div>
 </div>
 <div data-if="submitted">
@@ -450,14 +452,17 @@ button:focus-visible,a:focus-visible{outline:2px solid #D4AE62;outline-offset:3p
 <span style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 20px; letter-spacing: 0.14em; color: #F3EEE4">LA FERME D'ARBUSSON</span>
 <span style="letter-spacing: 0.24em; font-size: 11px; color: #D4AE62">MICROGREENS &amp; AROMATIQUES</span>
 </div>
-<span>[ADRESSE DE LA FERME]</span>
+<span>Peyrolles-en-Provence</span>
 <span>© 2026 La Ferme d'Arbusson · Mentions légales</span>
 </div>
 </footer>
 </div>
 <script>
+
+// ⚙️ Adresse qui reçoit les commandes
+var EMAIL_COMMANDES='contact@ferme-arbusson.fr';
 (function(){
-var s={mode:'abo',qty:20,mar:true,ven:true,submitted:false};
+var s={mode:'abo',qty:20,mar:true,ven:true,submitted:false,sending:false,formError:''};
 function euro(n){return n.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' € HT';}
 function optStyle(on){var b='text-align: left; padding: 16px 18px; border-radius: 6px; cursor: pointer; font: inherit; min-height: 76px; transition: all .15s; ';
 return on?b+'background: #D4AE62; color: #0A0A08; border: 1px solid #D4AE62':b+'background: transparent; color: #F3EEE4; border: 1px solid rgba(243,238,228,0.3)';}
@@ -472,17 +477,43 @@ marPressed:String(s.mar),venPressed:String(s.ven),marStyle:optStyle(s.mar),venSt
 perDelivery:euro(per),weeklyQty:s.qty*n,perMonth:'≈ '+euro(m),daysLabel:days,
 mainTotal:(isAbo?euro(w):euro(per)).replace(' HT',''),mainLabel:isAbo?'HT par semaine · sans engagement':'HT pour cette commande',
 ctaLabel:isAbo?'Démarrer mon abonnement':'Passer ma commande',summaryLine:line.charAt(0).toUpperCase()+line.slice(1),summaryLower:line,
-summaryTotal:isAbo?euro(w)+' par semaine':euro(per),submitted:s.submitted,notSubmitted:!s.submitted};}
+summaryTotal:isAbo?euro(w)+' par semaine':euro(per),submitted:s.submitted,notSubmitted:!s.submitted,sending:s.sending,formError:s.formError,submitLabel:s.sending?'Envoi en cours…':'Envoyer ma commande',_n:n,_per:per,_w:w,_days:days};}
 function render(){var v=vals();
 document.querySelectorAll('[data-bind]').forEach(function(e){e.textContent=v[e.dataset.bind];});
 document.querySelectorAll('[data-style]').forEach(function(e){e.setAttribute('style',v[e.dataset.style]);});
 document.querySelectorAll('[data-pressed]').forEach(function(e){e.setAttribute('aria-pressed',v[e.dataset.pressed]);});
 document.querySelectorAll('[data-if]').forEach(function(e){e.style.display=v[e.dataset.if]?'':'none';});
+document.querySelectorAll('[data-disabled]').forEach(function(e){e.disabled=!!v[e.dataset.disabled];e.style.opacity=v[e.dataset.disabled]?'0.6':'1';});
 document.querySelectorAll('[data-preset]').forEach(function(e){e.setAttribute('style',pillStyle(+e.dataset.preset===s.qty));});}
+
+function field(n){var e=document.querySelector('[name="'+n+'"]');return e?e.value.trim():'';}
+function send(){
+if(s.sending)return;
+var miss=[['restaurant','le nom du restaurant'],['nom','votre nom'],['email','votre email'],['telephone','votre téléphone'],['adresse','l\'adresse de livraison']].filter(function(f){return !field(f[0]);});
+if(miss.length){s.formError='Merci de renseigner '+miss.map(function(f){return f[1];}).join(', ')+'.';render();return;}
+if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field('email'))){s.formError='Merci de vérifier votre adresse email.';render();return;}
+if(field('_honey')){s.submitted=true;render();return;}
+var v=vals();var isAbo=s.mode==='abo';
+var data={
+_subject:'🌱 Nouvelle '+(isAbo?'demande d\'abonnement':'commande')+' — '+field('restaurant'),
+_template:'table',_replyto:field('email'),_captcha:'false',
+'Restaurant':field('restaurant'),'Contact':field('nom'),'Email':field('email'),'Téléphone':field('telephone'),'Adresse de livraison':field('adresse'),
+'Formule':isAbo?'Abonnement hebdomadaire sans engagement':'Commande ponctuelle',
+'Barquettes par livraison':String(s.qty),
+'Jours de livraison':isAbo?v._days:'À convenir (mardi ou vendredi)',
+'Montant par livraison':euro(v._per),
+'Total par semaine':isAbo?euro(v._w)+' ('+(s.qty*v._n)+' barquettes)':'—',
+'Message':field('message')||'—'};
+s.sending=true;s.formError='';render();
+fetch('https://formsubmit.co/ajax/'+EMAIL_COMMANDES,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(data)})
+.then(function(r){return r.json().then(function(j){if(!r.ok||String(j.success)!=='true')throw new Error(j.message||'Erreur');});})
+.then(function(){s.sending=false;s.submitted=true;render();})
+.catch(function(){s.sending=false;s.formError='L\'envoi n\'a pas abouti. Réessayez dans un instant ou appelez-nous directement.';render();});
+}
 var A={setUnique:function(){s.mode='unique';},setAbo:function(){s.mode='abo';},
 inc:function(){s.qty++;},dec:function(){s.qty=Math.max(10,s.qty-1);},
 toggleMar:function(){if(s.mar&&!s.ven)return;s.mar=!s.mar;},toggleVen:function(){if(s.ven&&!s.mar)return;s.ven=!s.ven;},
-submit:function(){s.submitted=true;},reset:function(){s.submitted=false;}};
+submit:function(){send();},reset:function(){s.submitted=false;document.querySelectorAll('#commande input,#commande textarea').forEach(function(e){e.value='';});}};
 document.addEventListener('click',function(ev){var b=ev.target.closest('[data-action]');if(!b)return;
 var a=b.dataset.action;if(a==='preset')s.qty=+b.dataset.preset;else if(A[a])A[a]();render();});
 render();
