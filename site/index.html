@@ -491,7 +491,9 @@ button:focus-visible,a:focus-visible{outline:2px solid #D4AE62;outline-offset:3p
 </div>
 <div style="display: flex; flex-direction: column; gap: 6px">
 <label for="f-adresse" style="font-size: 14px; font-weight: 500">Adresse de livraison <span aria-hidden="true" style="color: #9B2C2C">*</span></label>
-<input id="f-adresse" name="adresse" required autocomplete="on" type="text" placeholder="Rue, code postal, ville" style="height: 48px; border: 1px solid #BDB6A8; border-radius: 4px; padding: 0 14px; font: inherit; font-size: 16px; color: #141412; background: #FFFFFF">
+<div style="position: relative">
+<input id="f-adresse" name="adresse" required autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="adresse-suggestions" type="text" placeholder="Rue, code postal, ville" style="width: 100%; box-sizing: border-box; height: 48px; border: 1px solid #BDB6A8; border-radius: 4px; padding: 0 14px; font: inherit; font-size: 16px; color: #141412; background: #FFFFFF">
+</div>
 </div>
 <div style="display: flex; flex-direction: column; gap: 6px">
 <label for="f-msg" style="font-size: 14px; font-weight: 500">Message (facultatif)</label>

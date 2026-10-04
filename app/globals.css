@@ -1,0 +1,80 @@
+body {
+  margin: 0;
+  background: #000;
+}
+a {
+  color: #d4ae62;
+}
+a:hover {
+  color: #ebcb86;
+}
+summary {
+  cursor: pointer;
+  list-style: none;
+}
+summary::-webkit-details-marker {
+  display: none;
+}
+input::placeholder,
+textarea::placeholder {
+  color: #7d766b;
+}
+input:focus,
+textarea:focus,
+select:focus {
+  outline: 2px solid #d4ae62;
+  outline-offset: 1px;
+}
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid #d4ae62;
+  outline-offset: 3px;
+}
+html {
+  scroll-behavior: smooth;
+}
+.address-suggest {
+  position: absolute;
+  z-index: 30;
+  left: 0;
+  right: 0;
+  top: calc(100% + 6px);
+  margin: 0;
+  padding: 4px 0 0;
+  list-style: none;
+  background: #fff;
+  border: 1px solid #bdb6a8;
+  border-radius: 4px;
+  box-shadow: 0 16px 40px -20px rgba(20, 20, 18, 0.45);
+  max-height: 280px;
+  overflow: auto;
+}
+.address-suggest[hidden] {
+  display: none;
+}
+.address-suggest button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: 0;
+  background: transparent;
+  color: #141412;
+  font: inherit;
+  font-size: 15px;
+  line-height: 1.35;
+  padding: 10px 14px;
+  cursor: pointer;
+}
+.address-suggest button[aria-selected='true'],
+.address-suggest button:hover {
+  background: #f3eee4;
+}
+.address-suggest-brand {
+  display: flex;
+  justify-content: flex-end;
+  padding: 4px 10px 8px;
+}
+.address-suggest-brand img {
+  height: 14px;
+  width: auto;
+}
