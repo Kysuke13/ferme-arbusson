@@ -90,6 +90,22 @@ export function homeJsonLd() {
         mainEntity: [
           {
             '@type': 'Question',
+            name: 'Quel est le délai pour ma première livraison ?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: "Nos micropousses sont cultivées à la demande. Pour une commande ponctuelle, comptez environ 10 jours. Pour un abonnement, la première livraison arrive environ 10 jours après l'inscription, puis chaque semaine le mardi et/ou le vendredi.",
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'Comment conserver les barquettes ?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'Au réfrigérateur, sans mouiller les feuilles. Les micropousses restent belles environ 5 jours au réfrigérateur après livraison.',
+            },
+          },
+          {
+            '@type': 'Question',
             name: 'Y a-t-il un minimum de commande ?',
             acceptedAnswer: {
               '@type': 'Answer',

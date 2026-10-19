@@ -15,8 +15,8 @@ export function SiteClient({ html, mapsApiKey }: { html: string; mapsApiKey: str
 
     const s = {
       mode: 'abo' as Mode,
-      qty: 20,
-      mar: true,
+      qty: 10,
+      mar: false,
       ven: true,
       submitted: false,
       sending: false,
@@ -44,8 +44,10 @@ export function SiteClient({ html, mapsApiKey }: { html: string; mapsApiKey: str
       const per = s.qty * 3.5
       const w = per * n
       const m = (w * 52) / 12
-      const days = s.mar && s.ven ? 'Mardi & vendredi' : s.mar ? 'Mardi' : 'Vendredi'
-      const line = isAbo ? 'abonnement de ' + s.qty + ' barquettes · ' + days.toLowerCase() : 'commande de ' + s.qty + ' barquettes'
+      const noDay = isAbo && n === 0
+      const days = s.mar && s.ven ? 'Mardi & vendredi' : s.mar ? 'Mardi' : s.ven ? 'Vendredi' : ''
+      const daysText = days ? days.toLowerCase() : 'jour à choisir'
+      const line = isAbo ? 'abonnement de ' + s.qty + ' barquettes · ' + daysText : 'commande de ' + s.qty + ' barquettes'
       return {
         qty: String(s.qty),
         isAbo,
@@ -58,15 +60,15 @@ export function SiteClient({ html, mapsApiKey }: { html: string; mapsApiKey: str
         marStyle: optStyle(s.mar),
         venStyle: optStyle(s.ven),
         perDelivery: euro(per),
-        weeklyQty: String(s.qty * n),
-        perMonth: '≈ ' + euro(m),
-        daysLabel: days,
-        mainTotal: (isAbo ? euro(w) : euro(per)).replace(' HT', ''),
-        mainLabel: isAbo ? 'HT par semaine · sans engagement' : 'HT pour cette commande',
+        weeklyQty: noDay ? '—' : String(s.qty * n),
+        perMonth: noDay ? '—' : '≈ ' + euro(m),
+        daysLabel: days || 'À choisir',
+        mainTotal: noDay ? '—' : (isAbo ? euro(w) : euro(per)).replace(' HT', ''),
+        mainLabel: noDay ? 'Choisissez votre jour de livraison' : isAbo ? 'HT par semaine · sans engagement' : 'HT pour cette commande',
         ctaLabel: isAbo ? 'Démarrer mon abonnement' : 'Passer ma commande',
         summaryLine: line.charAt(0).toUpperCase() + line.slice(1),
         summaryLower: line,
-        summaryTotal: isAbo ? euro(w) + ' par semaine' : euro(per),
+        summaryTotal: noDay ? '—' : isAbo ? euro(w) + ' par semaine' : euro(per),
         submitted: s.submitted,
         notSubmitted: !s.submitted,
         sending: s.sending,
@@ -108,6 +110,11 @@ export function SiteClient({ html, mapsApiKey }: { html: string; mapsApiKey: str
     }
     function send() {
       if (s.sending) return
+      if (s.mode === 'abo' && !s.mar && !s.ven) {
+        s.formError = 'Merci de choisir votre jour de livraison : mardi, vendredi ou les deux.'
+        render()
+        return
+      }
       const missing = [
         ['restaurant', 'le nom du restaurant'],
         ['nom', 'votre nom'],
@@ -181,13 +188,9 @@ export function SiteClient({ html, mapsApiKey }: { html: string; mapsApiKey: str
       else if (action === 'setAbo') s.mode = 'abo'
       else if (action === 'inc') s.qty += 1
       else if (action === 'dec') s.qty = Math.max(10, s.qty - 1)
-      else if (action === 'toggleMar') {
-        if (s.mar && !s.ven) return
-        s.mar = !s.mar
-      } else if (action === 'toggleVen') {
-        if (s.ven && !s.mar) return
-        s.ven = !s.ven
-      } else if (action === 'submit') send()
+      else if (action === 'toggleMar') s.mar = !s.mar
+      else if (action === 'toggleVen') s.ven = !s.ven
+      else if (action === 'submit') send()
       else if (action === 'reset') {
         s.submitted = false
         scope.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('#commande input, #commande textarea').forEach((el) => {
