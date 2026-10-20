@@ -2,6 +2,7 @@
 
 import { useLayoutEffect, useRef } from 'react'
 import { attachAddressAutocomplete } from '@/lib/address-places'
+import { discountRate, orderTotal, perDeliveryAmount, UNIT_PRICE } from '@/lib/pricing'
 
 type Mode = 'abo' | 'unique'
 
@@ -41,15 +42,29 @@ export function SiteClient({ html, mapsApiKey }: { html: string; mapsApiKey: str
     function vals() {
       const isAbo = s.mode === 'abo'
       const n = (s.mar ? 1 : 0) + (s.ven ? 1 : 0)
-      const per = s.qty * 3.5
-      const w = per * n
+      // En abonnement, la quantité est hebdomadaire et répartie sur les jours choisis.
+      const split = isAbo && n === 2
+      const half = s.qty / 2
+      const rate = discountRate(s.qty)
+      const w = orderTotal(s.qty)
+      const per = perDeliveryAmount(s.qty, split ? 2 : 1)
       const m = (w * 52) / 12
       const noDay = isAbo && n === 0
       const days = s.mar && s.ven ? 'Mardi & vendredi' : s.mar ? 'Mardi' : s.ven ? 'Vendredi' : ''
-      const daysText = days ? days.toLowerCase() : 'jour à choisir'
-      const line = isAbo ? 'abonnement de ' + s.qty + ' barquettes · ' + daysText : 'commande de ' + s.qty + ' barquettes'
+      const daysText = split ? 'mardi & vendredi (' + half + ' + ' + half + ')' : days ? days.toLowerCase() : 'jour à choisir'
+      const line = isAbo ? 'abonnement de ' + s.qty + ' barquettes par semaine · ' + daysText : 'commande de ' + s.qty + ' barquettes'
       return {
         qty: String(s.qty),
+        qtyTitle: isAbo ? '2 · BARQUETTES PAR SEMAINE' : '2 · BARQUETTES',
+        qtyNote: !isAbo
+          ? 'Minimum 10 barquettes par commande.'
+          : split
+            ? 'Minimum 10 barquettes par semaine, réparties : ' + half + ' le mardi et ' + half + ' le vendredi.'
+            : 'Minimum 10 barquettes par semaine. En choisissant mardi et vendredi, elles sont réparties sur les deux livraisons.',
+        discountLabel: rate ? '−' + Math.round(rate * 100) + ' %' : 'Dès 20 barquettes',
+        hasDiscount: rate > 0,
+        savings: rate ? '− ' + euro(s.qty * UNIT_PRICE - w) : '',
+        deliveryQty: split ? half + ' le mardi + ' + half + ' le vendredi' : String(s.qty),
         isAbo,
         uniquePressed: String(!isAbo),
         aboPressed: String(isAbo),
@@ -60,7 +75,7 @@ export function SiteClient({ html, mapsApiKey }: { html: string; mapsApiKey: str
         marStyle: optStyle(s.mar),
         venStyle: optStyle(s.ven),
         perDelivery: euro(per),
-        weeklyQty: noDay ? '—' : String(s.qty * n),
+        weeklyQty: noDay ? '—' : String(s.qty),
         perMonth: noDay ? '—' : '≈ ' + euro(m),
         daysLabel: days || 'À choisir',
         mainTotal: noDay ? '—' : (isAbo ? euro(w) : euro(per)).replace(' HT', ''),
@@ -177,6 +192,10 @@ export function SiteClient({ html, mapsApiKey }: { html: string; mapsApiKey: str
         })
     }
 
+    function splitStep() {
+      return s.mode === 'abo' && s.mar && s.ven ? 2 : 1
+    }
+
     function onClick(event: Event) {
       const target = event.target
       if (!(target instanceof Element)) return
@@ -186,8 +205,8 @@ export function SiteClient({ html, mapsApiKey }: { html: string; mapsApiKey: str
       if (action === 'preset') s.qty = Number(button.dataset.preset)
       else if (action === 'setUnique') s.mode = 'unique'
       else if (action === 'setAbo') s.mode = 'abo'
-      else if (action === 'inc') s.qty += 1
-      else if (action === 'dec') s.qty = Math.max(10, s.qty - 1)
+      else if (action === 'inc') s.qty += splitStep()
+      else if (action === 'dec') s.qty = Math.max(10, s.qty - splitStep())
       else if (action === 'toggleMar') s.mar = !s.mar
       else if (action === 'toggleVen') s.ven = !s.ven
       else if (action === 'submit') send()
@@ -198,6 +217,8 @@ export function SiteClient({ html, mapsApiKey }: { html: string; mapsApiKey: str
           el.dispatchEvent(new Event('input', { bubbles: true }))
         })
       }
+      // Deux livraisons : quantité paire pour une répartition égale.
+      if (splitStep() === 2 && s.qty % 2) s.qty += 1
       render()
     }
 

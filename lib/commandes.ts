@@ -1,11 +1,11 @@
 import 'server-only'
+import { orderTotal, perDeliveryAmount } from '@/lib/pricing'
 import { supabaseAdmin } from '@/lib/supabase-admin'
 
 const FORMULE_ABO = 'Abonnement hebdomadaire sans engagement'
 const FORMULE_UNIQUE = 'Commande ponctuelle'
 const JOURS_ABO = ['Mardi & vendredi', 'Mardi', 'Vendredi'] as const
 const JOURS_UNIQUE = 'À convenir (mardi ou vendredi)'
-const UNIT = 3.5
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 export type Commande = {
@@ -38,10 +38,11 @@ function text(value: unknown, min: number, max: number) {
   return trimmed
 }
 
+// En abonnement, `barquettes` est la quantité hebdomadaire, répartie sur les jours de livraison.
 function money(barquettes: number, days: number) {
-  const perDelivery = Math.round(barquettes * UNIT * 100) / 100
-  const perWeek = days > 0 ? Math.round(perDelivery * days * 100) / 100 : null
-  return { perDelivery, perWeek }
+  const total = orderTotal(barquettes)
+  if (days === 0) return { perDelivery: total, perWeek: null }
+  return { perDelivery: perDeliveryAmount(barquettes, days), perWeek: total }
 }
 
 export function parseCommande(input: unknown): ParseResult {
@@ -76,6 +77,9 @@ export function parseCommande(input: unknown): ParseResult {
   if (!allowed) return { ok: false, error: 'Jours de livraison invalides.' }
 
   const days = jours === 'Mardi & vendredi' ? 2 : isAbo ? 1 : 0
+  if (days === 2 && barquettes % 2) {
+    return { ok: false, error: 'Avec deux livraisons, choisissez un nombre pair de barquettes pour les répartir.' }
+  }
   const amounts = money(barquettes, days)
 
   return {

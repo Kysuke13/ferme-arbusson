@@ -1,6 +1,7 @@
 import 'server-only'
 import { Resend } from 'resend'
 import type { NewCommande } from '@/lib/commandes'
+import { discountRate } from '@/lib/pricing'
 import { SITE_EMAIL, SITE_NAME, SITE_PHONE_DISPLAY } from '@/lib/site'
 
 function euro(n: number) {
@@ -32,10 +33,16 @@ function lines(row: NewCommande): Line[] {
     { label: 'Téléphone', value: row.telephone },
     { label: 'Adresse de livraison', value: row.adresse },
     { label: 'Formule', value: row.formule },
-    { label: 'Barquettes par livraison', value: String(row.barquettes) },
+    { label: isAbo ? 'Barquettes par semaine' : 'Barquettes', value: String(row.barquettes) },
     { label: 'Jours de livraison', value: row.jours },
     { label: 'Montant par livraison', value: euro(row.montant_livraison) },
   ]
+  const rate = discountRate(row.barquettes)
+  if (rate) items.push({ label: 'Remise quantité', value: `−${Math.round(rate * 100)} % (incluse dans les montants)` })
+  if (row.jours === 'Mardi & vendredi') {
+    const half = row.barquettes / 2
+    items.splice(8, 0, { label: 'Répartition', value: `${half} le mardi + ${half} le vendredi` })
+  }
   if (isAbo) {
     items.push({
       label: 'Total par semaine',

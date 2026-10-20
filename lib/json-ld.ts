@@ -109,7 +109,7 @@ export function homeJsonLd() {
             name: 'Y a-t-il un minimum de commande ?',
             acceptedAnswer: {
               '@type': 'Answer',
-              text: 'Oui, 10 barquettes par livraison, que ce soit en commande ponctuelle ou en abonnement.',
+              text: 'Oui, 10 barquettes minimum. En abonnement, c’est 10 barquettes par semaine : si vous choisissez le mardi et le vendredi, elles sont réparties sur les deux livraisons (par exemple 5 le mardi et 5 le vendredi).',
             },
           },
         ],
