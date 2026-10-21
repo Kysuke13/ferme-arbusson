@@ -68,7 +68,7 @@ export function homeJsonLd() {
           url: `${url}/#tarifs`,
           price: '3.50',
           priceCurrency: 'EUR',
-          availability: 'https://schema.org/InStock',
+          availability: 'https://schema.org/PreOrder',
           priceSpecification: {
             '@type': 'UnitPriceSpecification',
             price: '3.50',

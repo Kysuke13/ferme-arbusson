@@ -1,5 +1,8 @@
 export const UNIT_PRICE = 3.5
 
+// Frais de livraison d'une commande ponctuelle. La livraison reste offerte en abonnement.
+export const DELIVERY_FEE_PONCTUEL = 5
+
 // Remises sur la quantité commandée (par semaine en abonnement), de la plus forte à la plus faible.
 export const DISCOUNTS = [
   { min: 50, rate: 0.15 },

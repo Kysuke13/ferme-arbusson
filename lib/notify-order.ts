@@ -1,7 +1,7 @@
 import 'server-only'
 import { Resend } from 'resend'
 import type { NewCommande } from '@/lib/commandes'
-import { discountRate } from '@/lib/pricing'
+import { DELIVERY_FEE_PONCTUEL, discountRate } from '@/lib/pricing'
 import { SITE_EMAIL, SITE_NAME, SITE_PHONE_DISPLAY } from '@/lib/site'
 
 function euro(n: number) {
@@ -32,16 +32,17 @@ function lines(row: NewCommande): Line[] {
     { label: 'Email', value: row.email },
     { label: 'Téléphone', value: row.telephone },
     { label: 'Adresse de livraison', value: row.adresse },
-    { label: 'Formule', value: row.formule },
+    { label: 'Formule envisagée', value: row.formule },
     { label: isAbo ? 'Barquettes par semaine' : 'Barquettes', value: String(row.barquettes) },
     { label: 'Jours de livraison', value: row.jours },
-    { label: 'Montant par livraison', value: euro(row.montant_livraison) },
+    { label: 'Frais de livraison', value: isAbo ? 'Offerts' : euro(DELIVERY_FEE_PONCTUEL) },
+    { label: isAbo ? 'Montant par livraison' : 'Montant (livraison comprise)', value: euro(row.montant_livraison) },
   ]
   const rate = discountRate(row.barquettes)
   if (rate) items.push({ label: 'Remise quantité', value: `−${Math.round(rate * 100)} % (incluse dans les montants)` })
   if (row.jours === 'Mardi & vendredi') {
     const half = row.barquettes / 2
-    items.splice(8, 0, { label: 'Répartition', value: `${half} le mardi + ${half} le vendredi` })
+    items.splice(9, 0, { label: 'Répartition', value: `${half} le mardi + ${half} le vendredi` })
   }
   if (isAbo) {
     items.push({
@@ -108,15 +109,15 @@ export async function notifyOrder(row: NewCommande) {
 
   const resend = new Resend(apiKey)
   const isAbo = row.formule.startsWith('Abonnement')
-  const kind = isAbo ? "demande d'abonnement" : 'commande'
+  const kind = isAbo ? 'abonnement envisagé' : 'commande ponctuelle envisagée'
   const items = lines(row)
   const from = fromAddress()
-  const farmIntro = `Nouvelle ${kind} pour ${row.restaurant}.`
+  const farmIntro = `Nouvelle inscription au lancement pour ${row.restaurant} (${kind}). À recontacter lors du lancement du Chef Mix.`
   const guestIntro = [
     `Bonjour ${row.nom},`,
     '',
-    `Merci, c'est semé. Votre demande est bien partie : nous vous rappelons très vite pour confirmer votre ${isAbo ? 'abonnement' : 'commande'}.`,
-    'Aucun paiement en ligne.',
+    `Merci pour votre inscription. Le Chef Mix est un nouveau produit de la ferme, en cours de lancement : nous vous recontacterons dès son lancement pour confirmer votre ${isAbo ? 'abonnement' : 'commande'}.`,
+    'Aucun engagement, aucun paiement en ligne.',
     '',
     'Voici le détail.',
   ].join('\n')
@@ -126,7 +127,7 @@ export async function notifyOrder(row: NewCommande) {
       from,
       to: [to],
       replyTo: row.email,
-      subject: `Nouvelle ${kind} — ${row.restaurant}`,
+      subject: `Nouvelle inscription au lancement — ${row.restaurant}`,
       text: textBody(farmIntro, items),
       html: htmlBody(farmIntro, items),
       tags: [{ name: 'type', value: 'commande_ferme' }],
@@ -135,7 +136,7 @@ export async function notifyOrder(row: NewCommande) {
       from,
       to: [row.email],
       replyTo: SITE_EMAIL,
-      subject: `Merci, c'est semé — ${SITE_NAME}`,
+      subject: `Votre inscription au lancement — ${SITE_NAME}`,
       text: textBody(guestIntro, items),
       html: htmlBody(guestIntro, items),
       tags: [{ name: 'type', value: 'commande_client' }],

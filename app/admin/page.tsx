@@ -16,7 +16,7 @@ function when(value: string) {
 }
 
 function Orders({ rows }: { rows: Commande[] }) {
-  if (!rows.length) return <p className={styles.empty}>Aucune commande pour le moment.</p>
+  if (!rows.length) return <p className={styles.empty}>Aucune inscription pour le moment.</p>
   return (
     <div className={styles.tableWrap}>
       <table className={styles.table}>
@@ -28,7 +28,7 @@ function Orders({ rows }: { rows: Commande[] }) {
             <th>Email</th>
             <th>Téléphone</th>
             <th>Adresse</th>
-            <th>Formule</th>
+            <th>Formule envisagée</th>
             <th>Barquettes</th>
             <th>Jours</th>
             <th>Par livraison</th>
@@ -53,7 +53,7 @@ function Orders({ rows }: { rows: Commande[] }) {
                 </a>
               </td>
               <td data-label="Adresse">{row.adresse}</td>
-              <td data-label="Formule">{row.formule}</td>
+              <td data-label="Formule envisagée">{row.formule}</td>
               <td data-label="Barquettes">{row.barquettes}</td>
               <td data-label="Jours">{row.jours}</td>
               <td data-label="Par livraison">{euro(row.montant_livraison)}</td>
@@ -82,7 +82,7 @@ export default async function AdminPage() {
     <main className={styles.main}>
       <header className={styles.header}>
         <div>
-          <div className={styles.kicker}>{loadError ? 'ADMIN' : `ADMIN · ${rows.length} COMMANDE${rows.length > 1 ? 'S' : ''}`}</div>
+          <div className={styles.kicker}>{loadError ? 'ADMIN' : `ADMIN · ${rows.length} INSCRIPTION${rows.length > 1 ? 'S' : ''}`}</div>
           <h1 className={styles.title}>Les demandes reçues</h1>
         </div>
         <div className={styles.actions}>

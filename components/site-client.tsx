@@ -2,7 +2,7 @@
 
 import { useLayoutEffect, useRef } from 'react'
 import { attachAddressAutocomplete } from '@/lib/address-places'
-import { discountRate, orderTotal, perDeliveryAmount, UNIT_PRICE } from '@/lib/pricing'
+import { DELIVERY_FEE_PONCTUEL, discountRate, orderTotal, perDeliveryAmount, UNIT_PRICE } from '@/lib/pricing'
 
 type Mode = 'abo' | 'unique'
 
@@ -47,7 +47,8 @@ export function SiteClient({ html, mapsApiKey }: { html: string; mapsApiKey: str
       const half = s.qty / 2
       const rate = discountRate(s.qty)
       const w = orderTotal(s.qty)
-      const per = perDeliveryAmount(s.qty, split ? 2 : 1)
+      // Commande ponctuelle : frais de livraison en plus. Abonnement : livraison offerte.
+      const per = perDeliveryAmount(s.qty, split ? 2 : 1) + (isAbo ? 0 : DELIVERY_FEE_PONCTUEL)
       const m = (w * 52) / 12
       const noDay = isAbo && n === 0
       const days = s.mar && s.ven ? 'Mardi & vendredi' : s.mar ? 'Mardi' : s.ven ? 'Vendredi' : ''
@@ -75,20 +76,21 @@ export function SiteClient({ html, mapsApiKey }: { html: string; mapsApiKey: str
         marStyle: optStyle(s.mar),
         venStyle: optStyle(s.ven),
         perDelivery: euro(per),
+        deliveryFee: isAbo ? 'Offerte' : euro(DELIVERY_FEE_PONCTUEL),
         weeklyQty: noDay ? '—' : String(s.qty),
         perMonth: noDay ? '—' : '≈ ' + euro(m),
         daysLabel: days || 'À choisir',
         mainTotal: noDay ? '—' : (isAbo ? euro(w) : euro(per)).replace(' HT', ''),
-        mainLabel: noDay ? 'Choisissez votre jour de livraison' : isAbo ? 'HT par semaine · sans engagement' : 'HT pour cette commande',
-        ctaLabel: isAbo ? 'Démarrer mon abonnement' : 'Passer ma commande',
+        mainLabel: noDay ? 'Choisissez votre jour de livraison' : isAbo ? 'HT par semaine · livraison offerte · sans engagement' : 'HT pour cette commande, livraison comprise',
+        ctaLabel: 'M’inscrire au lancement',
         summaryLine: line.charAt(0).toUpperCase() + line.slice(1),
         summaryLower: line,
-        summaryTotal: noDay ? '—' : isAbo ? euro(w) + ' par semaine' : euro(per),
+        summaryTotal: noDay ? '—' : isAbo ? euro(w) + ' par semaine, livraison offerte' : euro(per) + ', livraison comprise',
         submitted: s.submitted,
         notSubmitted: !s.submitted,
         sending: s.sending,
         formError: s.formError,
-        submitLabel: s.sending ? 'Envoi en cours…' : 'Envoyer ma commande',
+        submitLabel: s.sending ? 'Envoi en cours…' : 'M’inscrire pour être recontacté',
         _n: n,
         _per: per,
         _w: w,

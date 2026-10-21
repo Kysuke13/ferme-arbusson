@@ -1,5 +1,5 @@
 import 'server-only'
-import { orderTotal, perDeliveryAmount } from '@/lib/pricing'
+import { DELIVERY_FEE_PONCTUEL, orderTotal, perDeliveryAmount } from '@/lib/pricing'
 import { supabaseAdmin } from '@/lib/supabase-admin'
 
 const FORMULE_ABO = 'Abonnement hebdomadaire sans engagement'
@@ -39,9 +39,10 @@ function text(value: unknown, min: number, max: number) {
 }
 
 // En abonnement, `barquettes` est la quantité hebdomadaire, répartie sur les jours de livraison.
+// En commande ponctuelle, le montant inclut les frais de livraison.
 function money(barquettes: number, days: number) {
   const total = orderTotal(barquettes)
-  if (days === 0) return { perDelivery: total, perWeek: null }
+  if (days === 0) return { perDelivery: total + DELIVERY_FEE_PONCTUEL, perWeek: null }
   return { perDelivery: perDeliveryAmount(barquettes, days), perWeek: total }
 }
 
